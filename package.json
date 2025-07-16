@@ -2,9 +2,10 @@
   "name": "beauty-studio-backend",
   "version": "1.0.0",
   "description": "Backend for beauty studio",
-  "main": "server.js",
   "author": "d-tysh",
   "license": "ISC",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
