@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import logger from 'morgan';
 import 'dotenv/config';
+import adminRouter from './api/admin.js';
 
 const app = express();
 
@@ -23,11 +24,13 @@ app.use(logger('tiny'));
 app.use(express.json());
 app.use(cors(corsOptions));
 
+app.use('/api/admin', adminRouter);
+
 app.use((_, res, __) => {
     return res.status(404).json({
         status: 'error',
         code: 404,
-        message: 'Use api on routes: /api/news',
+        message: 'Use api on routes: /api/...',
         data: 'Not Found'
     })
 })
