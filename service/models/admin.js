@@ -12,6 +12,11 @@ const AdminSchema = new Schema({
         required: [true, 'Login is required'],
         unique: true
     },
+    email: {
+        type: String,
+        unique: true,
+        default: ''
+    },
     password: {
         type: String,
         required: [true, 'Password is required']
@@ -20,9 +25,11 @@ const AdminSchema = new Schema({
         type: String,
         enum: ['basic', 'pro'],
         default: 'basic'
+    },
+    token: {
+        type: String,
+        default: ''
     }
 })
 
-const Admin = mongoose.model('admin', AdminSchema);
-
-export default Admin;
+export const Admin = mongoose.model('admin', AdminSchema);
