@@ -23,9 +23,7 @@ const register = async (req, res) => {
     const password = await bcrypt.hash(req.body.password, 10);
     await Admin.create({ ...req.body, password });
 
-    return res.json({
-        status: 'success',
-        code: 201,
+    return res.status(200).json({
         message: `Admin "${login}" registered successfully`
     })
 }
@@ -55,6 +53,13 @@ const login = async (req, res) => {
         email: result.email,
         status: result.status
     }
+
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60
+    })
 
     return res.json(data)
 }
