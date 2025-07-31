@@ -64,7 +64,30 @@ const login = async (req, res) => {
     return res.json(data)
 }
 
+const logout = async (req, res) => {
+    const { token } = req.cookies;
+    
+    if (!token) {
+        throw new Error('Unautorized');
+    }
+
+    const { id } = jwt.verify(token, SECRET_KEY)
+
+    await Admin.findByIdAndUpdate(id, { token: '' });
+
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
+    })
+
+    return res.json({
+        message: 'Logout successful'
+    })
+}
+
 export default {
     register: controllerWrapper(register),
     login: controllerWrapper(login),
+    logout: controllerWrapper(logout)
 };
