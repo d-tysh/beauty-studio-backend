@@ -64,6 +64,25 @@ const login = async (req, res) => {
     return res.json(data)
 }
 
+const getCurrentAdmin = async (req, res) => {
+    const { token } = req.cookies;
+
+    if (!token) {
+        throw new Error('Unautorized');
+    }
+
+    const { id } = jwt.verify(token, SECRET_KEY)
+
+    const admin = await Admin.findById(id, '-password -token');
+
+    return res.status(200).json({
+        name: admin.name,
+        login: admin.login,
+        email: admin.email,
+        status: admin.status
+    })
+}
+
 const logout = async (req, res) => {
     const { token } = req.cookies;
     
@@ -89,5 +108,6 @@ const logout = async (req, res) => {
 export default {
     register: controllerWrapper(register),
     login: controllerWrapper(login),
-    logout: controllerWrapper(logout)
+    logout: controllerWrapper(logout),
+    getCurrentAdmin: controllerWrapper(getCurrentAdmin)
 };
