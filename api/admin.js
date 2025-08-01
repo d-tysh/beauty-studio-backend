@@ -7,5 +7,6 @@ router
     .post('/register', adminCtrl.register)
     .post('/login', adminCtrl.login)
     .post('/logout', adminCtrl.logout)
+    .get('/current', adminCtrl.getCurrentAdmin)
 
 export default router;
