@@ -101,17 +101,11 @@ const logout = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const { token } = req.cookies;
-
-    if (!token) {
-        throw new Error('Unautorized');
-    }
-
-    const { id } = jwt.verify(token, SECRET_KEY);
+    const { _id: id } = req.user;
 
     const result = await Admin.findByIdAndUpdate(id, req.body, { new: true });
 
-    return res.status(201).json({
+    return res.status(200).json({
         message: 'Successfully updated',
         result: {
             name: result.name,
