@@ -47,11 +47,13 @@ const login = async (req, res) => {
     const result = await Admin.findByIdAndUpdate(id, { token }, { new: true });
     const data = {
         message: 'Authorized',
-        id,
-        name: result.name,
-        login: result.login,
-        email: result.email,
-        status: result.status
+        data: {
+            id,
+            name: result.name,
+            login: result.login,
+            email: result.email,
+            status: result.status
+        }
     }
 
     res.cookie('token', token, {
@@ -85,7 +87,7 @@ const getCurrentAdmin = async (req, res) => {
 
 const logout = async (req, res) => {
     const { token } = req.cookies;
-    
+
     if (!token) {
         throw new Error('Unautorized');
     }
