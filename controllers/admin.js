@@ -23,7 +23,7 @@ const register = async (req, res) => {
     const password = await bcrypt.hash(req.body.password, 10);
     await Admin.create({ ...req.body, password });
 
-    return res.status(200).json({
+    return res.status(201).json({
         message: `Admin "${login}" registered successfully`
     })
 }
@@ -105,9 +105,32 @@ const logout = async (req, res) => {
     })
 }
 
+const update = async (req, res) => {
+    const { token } = req.cookies;
+
+    if (!token) {
+        throw new Error('Unautorized');
+    }
+
+    const { id } = jwt.verify(token, SECRET_KEY);
+
+    const result = await Admin.findByIdAndUpdate(id, req.body, { new: true });
+
+    return res.status(201).json({
+        message: 'Successfully updated',
+        result: {
+            name: result.name,
+            login: result.login,
+            email: result.email,
+            status: result.status
+        }
+    })
+}
+
 export default {
     register: controllerWrapper(register),
     login: controllerWrapper(login),
     logout: controllerWrapper(logout),
-    getCurrentAdmin: controllerWrapper(getCurrentAdmin)
+    getCurrentAdmin: controllerWrapper(getCurrentAdmin),
+    update: controllerWrapper(update)
 };
