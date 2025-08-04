@@ -67,21 +67,14 @@ const login = async (req, res) => {
 }
 
 const getCurrentAdmin = async (req, res) => {
-    const { token } = req.cookies;
-
-    if (!token) {
-        throw new Error('Unautorized');
-    }
-
-    const { id } = jwt.verify(token, SECRET_KEY)
-
-    const admin = await Admin.findById(id, '-password -token');
+    const { user } = req;
 
     return res.status(200).json({
-        name: admin.name,
-        login: admin.login,
-        email: admin.email,
-        status: admin.status
+        id: user._id,
+        name: user.name,
+        login: user.login,
+        email: user.email,
+        status: user.status
     })
 }
 
