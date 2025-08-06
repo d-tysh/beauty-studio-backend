@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Admin } from "../service/models/admin.js";
 import controllerWrapper from '../decorators/controllerWrapper.js';
+import { ADMIN_STATUS } from '../constants.js';
+import HttpError from '../helpers/HttpError.js';
 
 const { SECRET_KEY } = process.env;
 
@@ -116,10 +118,26 @@ const update = async (req, res) => {
     })
 }
 
+const getAllAdmins = async (req, res) => {
+    const { status } = req.user;
+
+    if (status !== ADMIN_STATUS.PRO) {
+        throw HttpError(403);
+    }
+
+    const result = await Admin.find({}, '-token -password');
+
+    return res.status(200).json({
+        count: result.length,
+        data: result
+    })
+}
+
 export default {
     register: controllerWrapper(register),
     login: controllerWrapper(login),
     logout: controllerWrapper(logout),
     getCurrentAdmin: controllerWrapper(getCurrentAdmin),
+    getAllAdmins: controllerWrapper(getAllAdmins),
     update: controllerWrapper(update)
 };
