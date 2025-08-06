@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ADMIN_STATUS } from "../../constants.js";
 
 const Schema = mongoose.Schema;
 
@@ -24,8 +25,8 @@ const AdminSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ['basic', 'pro'],
-            default: 'basic'
+            enum: [ADMIN_STATUS.BASIC, ADMIN_STATUS.PRO],
+            default: ADMIN_STATUS.BASIC
         },
         token: {
             type: String,
