@@ -9,6 +9,7 @@ router
     .post('/login', adminCtrl.login)
     .post('/logout', adminCtrl.logout)
     .get('/current', authenticate, adminCtrl.getCurrentAdmin)
+    .get('/all', authenticate, adminCtrl.getAllAdmins)
     .patch('/update', authenticate, adminCtrl.update)
 
 export default router;
