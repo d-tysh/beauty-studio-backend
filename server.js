@@ -3,9 +3,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import logger from 'morgan';
 import 'dotenv/config';
+import cookieParser from 'cookie-parser';
 import adminRouter from './api/admin.js';
 import clientRouter from './api/client.js';
-import cookieParser from 'cookie-parser';
+import serviceRouter from './api/service.js';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(cookieParser());
 
 app.use('/api/admin', adminRouter);
 app.use('/api/clients', clientRouter);
+app.use('/api/services', serviceRouter);
 
 app.use((_, res, __) => {
     return res.status(404).json({
