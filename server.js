@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import adminRouter from './api/admin.js';
 import clientRouter from './api/client.js';
 import serviceRouter from './api/service.js';
+import procedureRouter from './api/procedure.js';
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use('/api/admin', adminRouter);
 app.use('/api/clients', clientRouter);
 app.use('/api/services', serviceRouter);
+app.use('/api/procedures', procedureRouter);
 
 app.use((_, res, __) => {
     return res.status(404).json({
