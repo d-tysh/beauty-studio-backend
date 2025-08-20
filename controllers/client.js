@@ -1,6 +1,6 @@
 import controllerWrapper from "../decorators/controllerWrapper.js";
 import HttpError from "../helpers/HttpError.js";
-import Client from "../service/models/client.js";
+import { Client } from "../service/models/client.js";
 
 const register = async (req, res) => {
     const { phoneNumber } = req.body;
