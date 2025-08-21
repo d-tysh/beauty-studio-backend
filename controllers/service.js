@@ -1,5 +1,5 @@
 import controllerWrapper from "../decorators/controllerWrapper.js";
-import Service from "../service/models/service.js";
+import { Service } from "../service/models/service.js";
 
 const add = async (req, res) => {
     const result = await Service.create(req.body);
