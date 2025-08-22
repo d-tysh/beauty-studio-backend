@@ -1,7 +1,7 @@
 import { ADMIN_STATUS } from "../constants.js";
 import controllerWrapper from "../decorators/controllerWrapper.js";
 import HttpError from "../helpers/HttpError.js";
-import Procedure from "../service/models/procedure.js";
+import { Procedure } from "../service/models/procedure.js";
 
 const add = async (req, res) => {
     const { id: adminId } = req.user;
