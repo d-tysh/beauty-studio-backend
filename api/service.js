@@ -6,13 +6,11 @@ import { serviceAddSchema, serviceUpdateSchema } from '../service/models/service
 
 const router = express.Router();
 
-router.use(authenticate);
-
 router
-    .post('/', validateBody(serviceAddSchema), serviceCtrl.add)
+    .post('/', authenticate, validateBody(serviceAddSchema), serviceCtrl.add)
     .get('/', serviceCtrl.getAllServices)
     .get('/:id', serviceCtrl.getServiceById)
-    .patch('/:id', validateBody(serviceUpdateSchema), serviceCtrl.update)
-    .delete('/:id', serviceCtrl.remove);
+    .patch('/:id', authenticate, validateBody(serviceUpdateSchema), serviceCtrl.update)
+    .delete('/:id', authenticate, serviceCtrl.remove);
 
 export default router;
