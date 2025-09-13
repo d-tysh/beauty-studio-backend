@@ -35,12 +35,12 @@ const login = async (req, res) => {
 
     const admin = await Admin.findOne({ login });
     if (!admin) {
-        throw new Error(`Login or password is incorrect`)
+        throw HttpError(403, `Login or password is incorrect`);
     }
 
     const isMatchPassword = await bcrypt.compare(password, admin.password);
     if (!isMatchPassword) {
-        throw new Error(`Login or password is incorrect`);
+        throw HttpError(403, `Login or password is incorrect`);
     }
 
     const { _id: id } = admin;
