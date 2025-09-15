@@ -129,7 +129,7 @@ const getAllAdmins = async (req, res) => {
 
     return res.status(200).json({
         count: result.length,
-        data: result
+        result
     })
 }
 
