@@ -4,6 +4,7 @@ import { Admin } from "../service/models/admin.js";
 import controllerWrapper from '../decorators/controllerWrapper.js';
 import { ADMIN_STATUS } from '../constants.js';
 import HttpError from '../helpers/HttpError.js';
+import mongoose from 'mongoose';
 
 const { SECRET_KEY } = process.env;
 
@@ -80,6 +81,22 @@ const getCurrentAdmin = async (req, res) => {
     })
 }
 
+const getAdminById = async (req, res) => {
+    const { id } = req.params;
+    
+    const isValidId = mongoose.Types.ObjectId.isValid(id);
+    if (!isValidId) {
+        throw HttpError(400);
+    }
+    
+    const result = await Admin.findById(id, '-token -password');
+    if (!result) {
+        throw HttpError(404, 'User not found');
+    }
+
+    return res.status(201).json(result);
+}
+
 const logout = async (req, res) => {
     const { token } = req.cookies;
 
@@ -129,7 +146,7 @@ const getAllAdmins = async (req, res) => {
 
     return res.status(200).json({
         count: result.length,
-        data: result
+        result
     })
 }
 
@@ -138,6 +155,7 @@ export default {
     login: controllerWrapper(login),
     logout: controllerWrapper(logout),
     getCurrentAdmin: controllerWrapper(getCurrentAdmin),
+    getAdminById: controllerWrapper(getAdminById),
     getAllAdmins: controllerWrapper(getAllAdmins),
     update: controllerWrapper(update)
 };

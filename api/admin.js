@@ -12,6 +12,7 @@ router
     .post('/logout', adminCtrl.logout)
     .get('/current', authenticate, adminCtrl.getCurrentAdmin)
     .get('/all', authenticate, adminCtrl.getAllAdmins)
+    .get('/:id', authenticate, adminCtrl.getAdminById)
     .patch('/update', authenticate, validateBody(adminUpdateSchema), adminCtrl.update)
 
 export default router;
