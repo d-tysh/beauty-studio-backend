@@ -63,7 +63,7 @@ const login = async (req, res) => {
         httpOnly: true,
         secure: false,
         sameSite: 'lax',
-        maxAge: 1000 * 60 * 60
+        maxAge: 1000 * 60 * 60 * 24
     })
 
     return res.json(data)
@@ -120,9 +120,22 @@ const logout = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const { _id: id } = req.user;
+    const { _id: id, status } = req.user;
+    const { id: paramsId } = req.params;
 
-    const result = await Admin.findByIdAndUpdate(id, req.body, { new: true });
+    if (!mongoose.Types.ObjectId.isValid(paramsId)) {
+        throw HttpError(400, 'Invalid ID format');
+    }
+
+    if (!id.equals(paramsId) && status !== ADMIN_STATUS.PRO) {
+        throw HttpError(403);
+    }
+
+    const result = await Admin.findByIdAndUpdate(paramsId, req.body, { new: true });
+
+    if (!result) {
+        throw HttpError(404);
+    }
 
     return res.status(200).json({
         message: 'Successfully updated',
