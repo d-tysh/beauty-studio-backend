@@ -47,7 +47,6 @@ const getAllProcedures = async (req, res) => {
 
 const getProcedureById = async (req, res) => {
     const { _id: admin, status } = req.user;
-    console.log(`Admin ID: ${admin}\nStatus: ${status}`);
     const { id } = req.params;
 
     const findParams = status === ADMIN_STATUS.PRO ? { _id: id } : { _id: id, admin };
