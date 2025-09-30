@@ -14,13 +14,13 @@ const register = async (req, res) => {
     const adminLogin = await Admin.findOne({ login });
 
     if (adminLogin) {
-        throw new Error(`Admin with login "${login}" already exists`)
+        throw HttpError(409, `Admin with login "${login}" already exists`);
     }
 
     const adminEmail = await Admin.findOne({ email });
 
     if (adminEmail) {
-        throw new Error(`Admin with login "${email}" already exists`)
+        throw HttpError(409, `Admin with email "${email}" already exists`);
     }
 
     const password = await bcrypt.hash(req.body.password, 10);
