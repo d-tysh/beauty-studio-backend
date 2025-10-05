@@ -54,7 +54,6 @@ export const adminUpdateSchema = Joi.object({
     name: Joi.string().min(2).max(30),
     login: Joi.string().min(2).max(30).pattern(/^\S+$/),
     email: Joi.string().email().allow(''),
-    password: Joi.string().min(6).max(30).pattern(/^\S+$/),
     status: Joi.string().valid(ADMIN_STATUS.PRO, ADMIN_STATUS.BASIC)
 })
 
