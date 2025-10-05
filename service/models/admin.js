@@ -41,7 +41,8 @@ export const adminRegisterSchema = Joi.object({
     name: Joi.string().min(2).max(30).required(),
     login: Joi.string().min(2).max(30).pattern(/^\S+$/).required(),
     email: Joi.string().email().allow(''),
-    password: Joi.string().min(6).max(30).pattern(/^\S+$/).required()
+    password: Joi.string().min(6).max(30).pattern(/^\S+$/).required(),
+    status: Joi.string().valid(ADMIN_STATUS.PRO, ADMIN_STATUS.BASIC).required(),
 })
 
 export const adminLoginSchema = Joi.object({
