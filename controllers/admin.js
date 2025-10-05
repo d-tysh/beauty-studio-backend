@@ -163,6 +163,21 @@ const getAllAdmins = async (req, res) => {
     })
 }
 
+const remove = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.user;
+
+    if (status !== ADMIN_STATUS.PRO) {
+        throw HttpError(403);
+    }
+
+    const result = await Admin.findByIdAndDelete(id);
+
+    return res.status(200).json({
+        message: `Deleted: ${result.name}`,
+    })
+}
+
 export default {
     register: controllerWrapper(register),
     login: controllerWrapper(login),
@@ -170,5 +185,6 @@ export default {
     getCurrentAdmin: controllerWrapper(getCurrentAdmin),
     getAdminById: controllerWrapper(getAdminById),
     getAllAdmins: controllerWrapper(getAllAdmins),
-    update: controllerWrapper(update)
+    update: controllerWrapper(update),
+    remove: controllerWrapper(remove)
 };
