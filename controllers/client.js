@@ -23,7 +23,7 @@ const getAllClients = async (_, res) => {
 
     return res.status(200).json({
         count: result.length,
-        data: result
+        clients: result
     })
 }
 
@@ -46,7 +46,6 @@ const update = async (req, res) => {
         message: 'Successfully updated',
         result: {
             name: result.name,
-            nameForAdmin: result.nameForAdmin,
             phoneNumber: result.phoneNumber,
             description: result.description,
             discount: result.discount

@@ -14,5 +14,6 @@ router
     .get('/all', authenticate, adminCtrl.getAllAdmins)
     .get('/:id', authenticate, adminCtrl.getAdminById)
     .patch('/update/:id', authenticate, validateBody(adminUpdateSchema), adminCtrl.update)
+    .delete('/:id', authenticate, adminCtrl.remove)
 
 export default router;
