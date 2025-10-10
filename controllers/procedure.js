@@ -26,12 +26,12 @@ const getAllProcedures = async (req, res) => {
         result = await Procedure.find().populate([
             { path: 'admin', select: '_id name' },
             { path: 'client' },
-            { path: 'description', select: '-description' }
+            { path: 'services', select: '-description' }
         ]);;
     } else {
         result = await Procedure.find({ admin }).populate([
             { path: 'client' },
-            { path: 'description', select: '-description' }
+            { path: 'services', select: '-description' }
         ]);;
     }
 
@@ -54,7 +54,7 @@ const getProcedureById = async (req, res) => {
     const result = await Procedure.find(findParams).populate([
         { path: 'admin', select: '_id name' },
         { path: 'client' },
-        { path: 'description', select: '-description' }
+        { path: 'services', select: '-description' }
     ]);
 
     if (!result || !result.length) {
