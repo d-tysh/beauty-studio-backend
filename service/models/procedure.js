@@ -33,6 +33,7 @@ const ProcedureSchema = new Schema(
 )
 
 export const procedureAddSchema = Joi.object({
+    admin: Joi.string().required(),
     client: Joi.string().required(),
     date: Joi.string().required(),
     procedureName: Joi.string().allow(''),
@@ -42,6 +43,7 @@ export const procedureAddSchema = Joi.object({
 })
 
 export const procedureUpdateSchema = Joi.object({
+    admin: Joi.string().optional(),
     client: Joi.string().optional(),
     date: Joi.string().optional(),
     procedureName: Joi.string().optional(),

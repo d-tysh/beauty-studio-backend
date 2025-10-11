@@ -66,8 +66,16 @@ const getProcedureById = async (req, res) => {
 
 const update = async (req, res) => {
     const { id } = req.params;
-
-    const result = await Procedure.findByIdAndUpdate(id, req.body, { new: true });
+    const { date, ...restData } = req.body;
+    
+    const localDate = new Date(date);
+    const newDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+    const dataToUpdate = {
+        ...restData,
+        date: newDate
+    };
+    
+    const result = await Procedure.findByIdAndUpdate(id, dataToUpdate, { new: true });
 
     return res.status(200).json({
         message: 'Successfully updated',
