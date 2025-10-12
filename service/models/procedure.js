@@ -22,7 +22,7 @@ const ProcedureSchema = new Schema(
         procedureName: {
             type: String,
         },
-        description: [{
+        services: [{
             type: Schema.Types.ObjectId,
             ref: 'service'
         }],
@@ -33,20 +33,22 @@ const ProcedureSchema = new Schema(
 )
 
 export const procedureAddSchema = Joi.object({
+    admin: Joi.string().required(),
     client: Joi.string().required(),
     date: Joi.string().required(),
     procedureName: Joi.string().allow(''),
-    description: Joi.array().items(Joi.string()).required(),
+    services: Joi.array().items(Joi.string()).required(),
     additionalInfo: Joi.string().allow(''),
     price: Joi.number().min(0).required()
 })
 
 export const procedureUpdateSchema = Joi.object({
+    admin: Joi.string().optional(),
     client: Joi.string().optional(),
     date: Joi.string().optional(),
-    procedureName: Joi.string().optional(),
-    description: Joi.array().items(Joi.string()).optional(),
-    additionalInfo: Joi.string().optional(),
+    procedureName: Joi.string().optional().allow(''),
+    services: Joi.array().items(Joi.string()).optional(),
+    additionalInfo: Joi.string().optional().allow(''),
     price: Joi.number().min(0).optional()
 })
 

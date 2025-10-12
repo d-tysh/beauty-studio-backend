@@ -4,14 +4,7 @@ import HttpError from "../helpers/HttpError.js";
 import { Procedure } from "../service/models/procedure.js";
 
 const add = async (req, res) => {
-    const { id: adminId } = req.user;
-
-    const data = {
-        ...req.body,
-        admin: adminId
-    }
-
-    await Procedure.create(data);
+    await Procedure.create(req.body);
 
     return res.status(201).json({
         message: `Procedure added`
@@ -26,12 +19,12 @@ const getAllProcedures = async (req, res) => {
         result = await Procedure.find().populate([
             { path: 'admin', select: '_id name' },
             { path: 'client' },
-            { path: 'description', select: '-description' }
+            { path: 'services', select: '-description' }
         ]);;
     } else {
         result = await Procedure.find({ admin }).populate([
             { path: 'client' },
-            { path: 'description', select: '-description' }
+            { path: 'services', select: '-description' }
         ]);;
     }
 
@@ -41,7 +34,7 @@ const getAllProcedures = async (req, res) => {
 
     return res.status(200).json({
         count: result.length,
-        data: result
+        result
     })
 }
 
@@ -54,7 +47,7 @@ const getProcedureById = async (req, res) => {
     const result = await Procedure.find(findParams).populate([
         { path: 'admin', select: '_id name' },
         { path: 'client' },
-        { path: 'description', select: '-description' }
+        { path: 'services', select: '-description' }
     ]);
 
     if (!result || !result.length) {
@@ -66,8 +59,16 @@ const getProcedureById = async (req, res) => {
 
 const update = async (req, res) => {
     const { id } = req.params;
-
-    const result = await Procedure.findByIdAndUpdate(id, req.body, { new: true });
+    const { date, ...restData } = req.body;
+    
+    const localDate = new Date(date);
+    const newDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+    const dataToUpdate = {
+        ...restData,
+        date: newDate
+    };
+    
+    const result = await Procedure.findByIdAndUpdate(id, dataToUpdate, { new: true });
 
     return res.status(200).json({
         message: 'Successfully updated',
