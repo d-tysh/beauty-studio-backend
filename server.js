@@ -11,7 +11,9 @@ import procedureRouter from './api/procedure.js';
 
 const app = express();
 
-const ALLOWED_URLS = process.env.ALLOWED_URLS.split(',');
+const ALLOWED_URLS = process.env.ALLOWED_URLS
+  ? process.env.ALLOWED_URLS.split(',').map(url => url.trim())
+  : [];
 const DEV_MODE = process.env.DEV_MODE === 'true';
 
 const corsOptions = {
