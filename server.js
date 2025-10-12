@@ -11,14 +11,11 @@ import procedureRouter from './api/procedure.js';
 
 const app = express();
 
-const ALLOWED_URLS = process.env.ALLOWED_URLS
-  ? process.env.ALLOWED_URLS.split(',').map(url => url.trim())
-  : [];
-const DEV_MODE = process.env.DEV_MODE === 'true';
+const ALLOWED_URLS = process.env.ALLOWED_URLS.split(',');
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if ((DEV_MODE && !origin) || ALLOWED_URLS.includes(origin)) {
+        if (ALLOWED_URLS.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -28,10 +25,10 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 }
 
-app.use(logger('tiny'));
-app.use(express.json());
 app.use(cors(corsOptions));
+app.use(express.json());
 app.use(cookieParser());
+app.use(logger('tiny'));
 
 app.use('/api/admin', adminRouter);
 app.use('/api/clients', clientRouter);
