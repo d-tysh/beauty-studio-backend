@@ -46,9 +46,9 @@ export const procedureUpdateSchema = Joi.object({
     admin: Joi.string().optional(),
     client: Joi.string().optional(),
     date: Joi.string().optional(),
-    procedureName: Joi.string().optional(),
+    procedureName: Joi.string().optional().allow(''),
     services: Joi.array().items(Joi.string()).optional(),
-    additionalInfo: Joi.string().optional(),
+    additionalInfo: Joi.string().optional().allow(''),
     price: Joi.number().min(0).optional()
 })
 

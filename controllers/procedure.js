@@ -4,14 +4,7 @@ import HttpError from "../helpers/HttpError.js";
 import { Procedure } from "../service/models/procedure.js";
 
 const add = async (req, res) => {
-    const { id: adminId } = req.user;
-
-    const data = {
-        ...req.body,
-        admin: adminId
-    }
-
-    await Procedure.create(data);
+    await Procedure.create(req.body);
 
     return res.status(201).json({
         message: `Procedure added`
