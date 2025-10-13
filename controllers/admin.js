@@ -7,7 +7,7 @@ import HttpError from '../helpers/HttpError.js';
 import mongoose from 'mongoose';
 
 const { SECRET_KEY } = process.env;
-const DEV_MODE = process.env.DEV_MODE === 'true';
+// const DEV_MODE = process.env.DEV_MODE === 'true';
 
 const register = async (req, res) => {
     const { login, email } = req.body;
@@ -62,8 +62,10 @@ const login = async (req, res) => {
 
     res.cookie('token', token, {
         httpOnly: true,
-        secure: !DEV_MODE ? true : false,
-        sameSite: !DEV_MODE ? 'none' : 'lax',
+        // secure: !DEV_MODE ? true : false,
+        // sameSite: !DEV_MODE ? 'none' : 'lax',
+        secure: true,
+        sameSite: 'none',
         maxAge: 1000 * 60 * 60 * 24
     })
 
@@ -84,12 +86,12 @@ const getCurrentAdmin = async (req, res) => {
 
 const getAdminById = async (req, res) => {
     const { id } = req.params;
-    
+
     const isValidId = mongoose.Types.ObjectId.isValid(id);
     if (!isValidId) {
         throw HttpError(400);
     }
-    
+
     const result = await Admin.findById(id, '-token -password');
     if (!result) {
         throw HttpError(404, 'User not found');
@@ -111,8 +113,10 @@ const logout = async (req, res) => {
 
     res.clearCookie('token', {
         httpOnly: true,
-        secure: !DEV_MODE ? true : false,
-        sameSite: !DEV_MODE ? 'none' : 'lax',
+        // secure: !DEV_MODE ? true : false,
+        // sameSite: !DEV_MODE ? 'none' : 'lax',
+        secure: true,
+        sameSite: 'none',
     })
 
     return res.json({
