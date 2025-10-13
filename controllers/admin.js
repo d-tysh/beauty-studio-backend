@@ -7,6 +7,7 @@ import HttpError from '../helpers/HttpError.js';
 import mongoose from 'mongoose';
 
 const { SECRET_KEY } = process.env;
+const DEV_MODE = process.env.DEV_MODE === 'true';
 
 const register = async (req, res) => {
     const { login, email } = req.body;
@@ -61,8 +62,8 @@ const login = async (req, res) => {
 
     res.cookie('token', token, {
         httpOnly: true,
-        secure: false,
-        sameSite: 'lax',
+        secure: !DEV_MODE ? true : false,
+        sameSite: !DEV_MODE ? 'none' : 'lax',
         maxAge: 1000 * 60 * 60 * 24
     })
 
@@ -110,8 +111,8 @@ const logout = async (req, res) => {
 
     res.clearCookie('token', {
         httpOnly: true,
-        secure: false,
-        sameSite: 'lax'
+        secure: !DEV_MODE ? true : false,
+        sameSite: !DEV_MODE ? 'none' : 'lax',
     })
 
     return res.json({
